@@ -10,6 +10,8 @@ from .serializers import (
     ReservationSerializer,
     PlayListSerializer,
     PlayDetailSerializer,
+    PerformanceDetailSerializer,
+    PerformanceListSerializer,
 )
 
 
@@ -50,10 +52,22 @@ class PlayViewSet(
 
 
 class PerformanceViewSet(
-    GenericViewSet, mixins.CreateModelMixin, mixins.ListModelMixin
+    GenericViewSet,
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
 ):
     queryset = Performance.objects.all()
     serializer_class = PerformanceSerializer
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return PerformanceListSerializer
+
+        if self.action == "retrieve":
+            return PerformanceDetailSerializer
+
+        return PerformanceSerializer
 
 
 class ReservationViewSet(
