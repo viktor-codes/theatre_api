@@ -3,7 +3,9 @@ from datetime import datetime
 from django.db.models import Count, F
 from rest_framework import mixins, viewsets
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import GenericViewSet
+from .permissions import IsAdminOrIfAuthenticatedReadOnly
 from .models import Genre, Actor, TheatreHall, Play, Performance, Reservation
 from .serializers import (
     GenreSerializer,
@@ -23,11 +25,13 @@ from .serializers import (
 class GenreViewSet(GenericViewSet, mixins.CreateModelMixin, mixins.ListModelMixin):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
+    permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
 
 
 class ActorViewSet(GenericViewSet, mixins.CreateModelMixin, mixins.ListModelMixin):
     queryset = Actor.objects.all()
     serializer_class = ActorSerializer
+    permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
 
 
 class TheatreHallViewSet(
@@ -35,6 +39,7 @@ class TheatreHallViewSet(
 ):
     queryset = TheatreHall.objects.all()
     serializer_class = TheatreHallSerializer
+    permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
 
 
 class PlayViewSet(
@@ -45,6 +50,7 @@ class PlayViewSet(
 ):
     queryset = Play.objects.all()
     serializer_class = PlaySerializer
+    permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
 
     def get_serializer_class(self):
         if self.action == "list":
@@ -68,6 +74,7 @@ class PerformanceViewSet(viewsets.ModelViewSet):
     )
 
     serializer_class = PerformanceSerializer
+    permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
 
     def get_queryset(self):
         date = self.request.query_params.get("date")
@@ -107,6 +114,7 @@ class ReservationViewSet(
     )
     serializer_class = ReservationSerializer
     pagination_class = ReservationPagination
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         return Reservation.objects.filter(user=self.request.user)
