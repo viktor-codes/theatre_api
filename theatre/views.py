@@ -3,10 +3,9 @@ from datetime import datetime
 from django.db.models import Count, F
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter, extend_schema
-from rest_framework import mixins, viewsets, status
+from rest_framework import mixins, viewsets
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from .permissions import IsAdminOrIfAuthenticatedReadOnly
 from .models import Genre, Actor, TheatreHall, Play, Performance, Reservation
@@ -129,6 +128,7 @@ class PerformanceViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         date = self.request.query_params.get("date")
         play_id_str = self.request.query_params.get("play")
+        theatre_hall_id_str = self.request.query_params.get("theatre_hall")
 
         queryset = self.queryset
 
@@ -138,6 +138,9 @@ class PerformanceViewSet(viewsets.ModelViewSet):
 
         if play_id_str:
             queryset = queryset.filter(play_id=int(play_id_str))
+
+        if theatre_hall_id_str:
+            queryset = queryset.filter(theatre_hall_id=int(theatre_hall_id_str))
 
         return queryset
 
