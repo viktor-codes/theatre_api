@@ -3,9 +3,10 @@ from datetime import datetime
 from django.db.models import Count, F
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter, extend_schema
-from rest_framework import mixins, viewsets
+from rest_framework import mixins, viewsets, status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from .permissions import IsAdminOrIfAuthenticatedReadOnly
 from .models import Genre, Actor, TheatreHall, Play, Performance, Reservation
@@ -119,7 +120,6 @@ class PerformanceViewSet(viewsets.ModelViewSet):
         .annotate(
             tickets_available=F("theatre_hall__rows") * F("theatre_hall__seats_in_row")
             - Count("tickets")
-            - 1
         )
     )
 
@@ -157,7 +157,11 @@ class ReservationPagination(PageNumberPagination):
 
 
 class ReservationViewSet(
-    GenericViewSet, mixins.CreateModelMixin, mixins.ListModelMixin
+    GenericViewSet,
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin,
 ):
     queryset = Reservation.objects.prefetch_related(
         "tickets__movie_session__movie", "tickets__movie_session__cinema_hall"

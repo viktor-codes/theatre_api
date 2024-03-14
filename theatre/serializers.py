@@ -72,6 +72,7 @@ class PerformanceListSerializer(PerformanceSerializer):
     theatre_hall_capacity = serializers.IntegerField(
         source="theatre_hall.capacity", read_only=True
     )
+    tickets_available = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Performance
@@ -81,10 +82,12 @@ class PerformanceListSerializer(PerformanceSerializer):
             "play_title",
             "theatre_hall_name",
             "theatre_hall_capacity",
+            "tickets_available",
         )
 
 
 class TicketSerializer(serializers.ModelSerializer):
+    performance = PerformanceListSerializer(many=False, read_only=True)
 
     def validate(self, attrs):
         data = super(TicketSerializer, self).validate(attrs=attrs)
