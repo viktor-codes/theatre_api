@@ -1,7 +1,15 @@
 from django.db import transaction
 from rest_framework.exceptions import ValidationError
 from rest_framework import serializers
-from .models import Genre, Actor, TheatreHall, Play, Performance, Ticket, Reservation
+from .models import (
+    Genre,
+    Actor,
+    TheatreHall,
+    Play,
+    Performance,
+    Ticket,
+    Reservation,
+)
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -32,7 +40,9 @@ class PlaySerializer(serializers.ModelSerializer):
 
 
 class PlayListSerializer(PlaySerializer):
-    genres = serializers.SlugRelatedField(many=True, read_only=True, slug_field="name")
+    genres = serializers.SlugRelatedField(
+        many=True, read_only=True, slug_field="name"
+    )
     actors = serializers.SlugRelatedField(
         many=True, read_only=True, slug_field="full_name"
     )
@@ -114,7 +124,9 @@ class TicketSeatsSerializer(TicketSerializer):
 class PerformanceDetailSerializer(PerformanceSerializer):
     play = PlayListSerializer(many=False, read_only=True)
     theatre_hall = TheatreHallSerializer(many=False, read_only=True)
-    taken_places = TicketSeatsSerializer(source="tickets", many=True, read_only=True)
+    taken_places = TicketSeatsSerializer(
+        source="tickets", many=True, read_only=True
+    )
 
     class Meta:
         model = Performance

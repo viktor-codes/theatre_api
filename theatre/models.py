@@ -39,8 +39,8 @@ class TheatreHall(models.Model):
 class Play(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    genres = models.ManyToManyField(Genre, blank=True)
-    actors = models.ManyToManyField(Actor, blank=True)
+    genres = models.ManyToManyField(Genre, related_name="plays", blank=True)
+    actors = models.ManyToManyField(Actor, related_name="plays", blank=True)
 
     def __str__(self):
         return self.title
@@ -63,7 +63,9 @@ class Performance(models.Model):
 
 class Reservation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
+    )
 
     def __str__(self):
         return str(self.created_at)
@@ -84,7 +86,10 @@ class Ticket(models.Model):
 
     @staticmethod
     def validate_ticket(
-        row: int, seat: int, theatre_hall: TheatreHall, error_to_raise: ValidationError
+        row: int,
+        seat: int,
+        theatre_hall: TheatreHall,
+        error_to_raise: ValidationError,
     ):
         for ticket_attr_value, ticket_attr_name, theatre_hall_attr_name in [
             (row, "row", "rows"),
@@ -117,7 +122,9 @@ class Ticket(models.Model):
         update_fields=None,
     ):
         self.full_clean()
-        super(Ticket, self).save(force_insert, force_update, using, update_fields)
+        super(Ticket, self).save(
+            force_insert, force_update, using, update_fields
+        )
 
     def __str__(self):
         return f"{str(self.performance)} (row: {self.row}, seat: {self.seat})"

@@ -24,13 +24,17 @@ from .serializers import (
 )
 
 
-class GenreViewSet(GenericViewSet, mixins.CreateModelMixin, mixins.ListModelMixin):
+class GenreViewSet(
+    GenericViewSet, mixins.CreateModelMixin, mixins.ListModelMixin
+):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
 
 
-class ActorViewSet(GenericViewSet, mixins.CreateModelMixin, mixins.ListModelMixin):
+class ActorViewSet(
+    GenericViewSet, mixins.CreateModelMixin, mixins.ListModelMixin
+):
     queryset = Actor.objects.all()
     serializer_class = ActorSerializer
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
@@ -117,7 +121,8 @@ class PerformanceViewSet(viewsets.ModelViewSet):
         Performance.objects.all()
         .select_related("play", "theatre_hall")
         .annotate(
-            tickets_available=F("theatre_hall__rows") * F("theatre_hall__seats_in_row")
+            tickets_available=F("theatre_hall__rows")
+            * F("theatre_hall__seats_in_row")
             - Count("tickets")
         )
     )
@@ -140,7 +145,9 @@ class PerformanceViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(play_id=int(play_id_str))
 
         if theatre_hall_id_str:
-            queryset = queryset.filter(theatre_hall_id=int(theatre_hall_id_str))
+            queryset = queryset.filter(
+                theatre_hall_id=int(theatre_hall_id_str)
+            )
 
         return queryset
 

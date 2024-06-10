@@ -100,3 +100,4 @@ To authenticate users and obtain JWT tokens for accessing protected API endpoint
 3. **Include JWT Token**: Include the obtained JWT token in the `Authorization` header of subsequent API requests to access protected endpoints. Set the header value as `Bearer <JWT_token>`.
 
 4. **Access Protected Endpoints**: With the JWT token included in the request headers, you can now access protected API endpoints requiring authentication.
+
