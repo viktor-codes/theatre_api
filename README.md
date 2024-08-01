@@ -1,4 +1,4 @@
-# Theatre API
+# Theater API
 
 The Theatre API is a comprehensive platform designed to streamline the management and operation of a theatre or performing arts venue. It provides a wide range of functionalities to facilitate the administration of performances, ticket sales, audience engagement, and more.
 
