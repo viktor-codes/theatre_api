@@ -1,6 +1,6 @@
 # Theater API
 
-The Theatre API is a comprehensive platform designed to streamline the management and operation of a theatre or performing arts venue. It provides a wide range of functionalities to facilitate the administration of performances, ticket sales, audience engagement, and more.
+The Theater API is a comprehensive platform designed to streamline the management and operation of a Theater or performing arts venue. It provides a wide range of functionalities to facilitate the administration of performances, ticket sales, audience engagement, and more.
 
 ---
 
@@ -11,13 +11,13 @@ The Theatre API is a comprehensive platform designed to streamline the managemen
 1. Clone this repository to your local machine:
 
    ```bash
-   git clone https://github.com/rurakite/theatre-api.git
+   git clone https://github.com/rurakite/Theater-api.git
    ```
 
 2. Navigate to the project directory:
 
    ```bash
-   cd theatre-api
+   cd Theater-api
    ```
 
 3. Install the project dependencies:
@@ -37,7 +37,7 @@ The Theatre API is a comprehensive platform designed to streamline the managemen
 2. (Optional) Load initial data (if provided):
 
    ```bash
-   python manage.py loaddata theatre_api_data.json
+   python manage.py loaddata Theater_api_data.json
    ```
 
 3. Start the development server:
@@ -53,7 +53,7 @@ The Theatre API is a comprehensive platform designed to streamline the managemen
 1. Build the Docker image:
 
    ```bash
-   docker-compose build -t theatre-api .
+   docker-compose build -t Theater-api .
    ```
 
 2. Run the Docker container:
